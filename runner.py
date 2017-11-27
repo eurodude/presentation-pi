@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 '''
-This script is intended to run on the Raspberry Pi Model B 
+This script is intended to run on the Raspberry Pi Model B
 and newer.
 
 @author: Fabien MATHEY
@@ -9,7 +9,7 @@ and newer.
 @license: MIT
 
 DISCLAIMER:
-I am not liable for any problems this script may cause and 
+I am not liable for any problems this script may cause and
 thus it is a "Use at your own risk" typ of thing!
 '''
 
@@ -44,60 +44,59 @@ configs=""
 # this should run as long as possible
 while True:
 
-    if os.path.isfile(filename):
-        # check if the config file exists to get the "secs" from
-        if os.path.isfile(slide_time_file):
-            # only open the file if there has been a modification
-            if configs != os.path.getmtime(slide_time_file):
-                with open(slide_time_file, 'r') as f:
-                    theline = secs
-                    try:
-                        # the secs content should be an int on the first line
-                        theline = int(f.readline())
-                    except:
-                        # set the seconds to the DEFAULT_SECS if there has been a problem
-                        theline = DEFAULT_SECS
-                    
-                    # if secs in the file is different than the one in the variable, restart the presentation
-                    # Okular does not dynamically adjust the time a slide is shown, hence a reboot is necessary
-                    if secs != theline:
-                        secs = theline
-                        # only restart the presentation if running though
-                        if presrun != "":
-                            subprocess.call(["killall", "okular"])
-                            presrun = ""
-                            
-                # update the config file with the new secs variable, so Okular knows it.
-                config = ConfigParser.ConfigParser()
-                config.optionxform=str
-                config.read(okular_settings_file)
-                config.set('Core Presentation', 'SlidesAdvanceTime', secs)
-                # for good measure, tell the presentation to advance and loop (to be sure)
-                config.set('Core Presentation', 'SlidesAdvance', '\strue')
-                config.set('Core Presentation', 'SlidesLoop', '\strue')
-                with open(okular_settings_file, 'w') as configFile:
-                    config.write(configFile)
-                
-                # after saving, update the config variable to prohibit useless calculations
-                configs = os.path.getmtime(slide_time_file)
-                    
+    # check if the config file exists to get the "secs" from
+    if os.path.isfile(slide_time_file):
+        # only open the file if there has been a modification
+        if configs != os.path.getmtime(slide_time_file):
+            with open(slide_time_file, 'r') as f:
+                theline = secs
+                try:
+                    # the secs content should be an int on the first line
+                    theline = int(f.readline())
+                except:
+                    # set the seconds to the DEFAULT_SECS if there has been a problem
+                    theline = DEFAULT_SECS
 
-        try:
-            # check whether there has been a change to the existing presentation so it can be reloaded
-            if presrun != "" and presrun != os.path.getmtime(filename):
-                subprocess.call(["killlall", "okular"])
-                presrun = ""
-                
-            # if there is no running presentation, try to start a presentation
-            if presrun == "":
-                subprocess.Popen(["okular", "--presentation",filename])
-                presrun = os.path.getmtime(filename)
-            
-        except:
-            # in case someone removes the presentation, just kill okular
-            if presrun != "":
-                subprocess.call(["killall", "okular"])
-                presrun = ""
+                # if secs in the file is different than the one in the variable, restart the presentation
+                # Okular does not dynamically adjust the time a slide is shown, hence a reboot is necessary
+                if secs != theline:
+                    secs = theline
+                    # only restart the presentation if running though
+                    if presrun != "":
+                        subprocess.call(["killall", "okular"])
+                        presrun = ""
+
+            # update the config file with the new secs variable, so Okular knows it.
+            config = ConfigParser.ConfigParser()
+            config.optionxform=str
+            config.read(okular_settings_file)
+            config.set('Core Presentation', 'SlidesAdvanceTime', secs)
+            # for good measure, tell the presentation to advance and loop (to be sure)
+            config.set('Core Presentation', 'SlidesAdvance', '\strue')
+            config.set('Core Presentation', 'SlidesLoop', '\strue')
+            with open(okular_settings_file, 'w') as configFile:
+                config.write(configFile)
+
+            # after saving, update the config variable to prohibit useless calculations
+            configs = os.path.getmtime(slide_time_file)
+
+
+    try:
+        # check whether there has been a change to the existing presentation so it can be reloaded
+        if presrun != "" and (presrun != os.path.getmtime(filename) or not os.path.isfile(filename)):
+            subprocess.call(["killlall", "okular"])
+            presrun = ""
+
+        # if there is no running presentation, try to start a presentation
+        if presrun == "" and os.path.isfile(filename):
+            subprocess.Popen(["okular", "--presentation",filename])
+            presrun = os.path.getmtime(filename)
+
+    except:
+        # in case someone removes the presentation, just kill okular
+        if presrun != "":
+            subprocess.call(["killall", "okular"])
+            presrun = ""
 
     # give the machine a little timeout
     time.sleep(SCRIPT_FREQUENCY)
