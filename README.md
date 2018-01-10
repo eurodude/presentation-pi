@@ -26,13 +26,17 @@ The decision has been made, since okular is so *smart* that the advance and loop
 
 ## Which Pi models are supported?
 
-This should work on every Raspberry Pi running Raspbian Wheezy but it has been tested on a Raspberry Pi Model B as we have no others available at the time. Once Raspberry 2 and 3 (Model B each time) are in, tests will start.
+This should work on every Raspberry Pi running Raspbian Wheezy but it has been tested on a Raspberry Pi Model B and Raspberry Pi 2 Model B, as we have no others available at the time. Once Raspberry 3 Model B are in, tests will start.
 
 ## Configuring the Pi
 
 The configuration is based upon a local installation. This means that you have a keyboard, mouse and a screen attached to be able to configure the pi directly. Additionally, you need a network connection.
 
   >This configuration also assumes that the Pi is in a virtual network or behind a firewall that does not allow connections from the outside of the network.
+  
+### full screen mode
+
+If your raspberry pi does not show full screen, it could be that the ```disable_overscan``` is commented out or set to ```0```. This is found in ```/boot/config.txt```.
 
 ### create folders and permissions
 
