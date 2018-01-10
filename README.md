@@ -36,7 +36,7 @@ The configuration is based upon a local installation. This means that you have a
   
 ### full screen mode
 
-If your raspberry pi does not show full screen, it could be that the ```disable_overscan``` is commented out or set to ```0```. This is found in ```/boot/config.txt```.
+If your raspberry pi does not show full screen, it could be that the ```disable_overscan``` is commented out or set to ```0```. ([Source 2018-01-10](https://www.raspberrypi.org/forums/viewtopic.php?t=47152))
 
 ### create folders and permissions
 
