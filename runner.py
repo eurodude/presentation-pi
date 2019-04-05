@@ -24,6 +24,8 @@ DEFAULT_SECS = 20
 SCRIPT_FREQUENCY = 5
 
 # TO ADAPT DEPENDING ON YOUR DISTRO
+# show a slide number indicator circl on the top right when slide changes
+show_indicator_circl = "false"
 # the following is for Raspbian / Debian based
 okular_settings_file = os.path.expanduser("~")+"/.kde/share/config/okularpartrc"
 # the following is for archbased
@@ -74,6 +76,7 @@ while True:
             # for good measure, tell the presentation to advance and loop (to be sure)
             config.set('Core Presentation', 'SlidesAdvance', '\strue')
             config.set('Core Presentation', 'SlidesLoop', '\strue')
+            config.set('Dlg Presentation', 'SlidesShowProgress', show_indicator_circl)
             with open(okular_settings_file, 'w') as configFile:
                 config.write(configFile)
 
