@@ -13,7 +13,7 @@ I am not liable for any problems this script may cause and
 thus it is a "Use at your own risk" typ of thing!
 '''
 
-import ConfigParser
+import configparser
 import os.path
 import time
 import subprocess
