@@ -69,7 +69,7 @@ while True:
                         presrun = ""
 
             # update the config file with the new secs variable, so Okular knows it.
-            config = ConfigParser.ConfigParser()
+            config = configparser.ConfigParser()
             config.optionxform=str
             config.read(okular_settings_file)
             config.set('Core Presentation', 'SlidesAdvanceTime', str(secs))
