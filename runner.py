@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 '''
 This script is intended to run on the Raspberry Pi Model B
